@@ -22,4 +22,6 @@
 
 #include "chip_eeprom.h"
 
+#include "i2c.h"
+
 #endif /* INCLUDES_H_ */
