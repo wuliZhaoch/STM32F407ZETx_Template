@@ -24,4 +24,6 @@
 
 #include "i2c.h"
 
+#include "bmx160.h"
+
 #endif /* INCLUDES_H_ */

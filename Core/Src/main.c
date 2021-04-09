@@ -3,6 +3,7 @@
 uint32_t main_loop = 0;
 
 ChipIDTypeDef SystemChipID;
+uint8_t bmx160_chipid = 0;
 
 /**
   * @brief  The application entry point.
@@ -25,7 +26,12 @@ int main(void)
     printf("System chipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,
             SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
 
+    HAL_Delay(100);
+    BMX160_ByteRead(BMX160_CHIPID, &bmx160_chipid, BMX160_TIMEOUT);
+    printf("BMX160 ChipID is: 0x%x\r\n", bmx160_chipid);
+
     while (1) {
+
         printf("System main_loop is: %ld\r\n", main_loop);
         main_loop++;
         HAL_Delay(1000);
