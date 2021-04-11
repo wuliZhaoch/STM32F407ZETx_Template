@@ -18,6 +18,5 @@ void SystemClock_Config(void);
 
 void Error_Handler(void);
 
-void HAL_Delay_US(uint32_t Delay_us);
 
 #endif /* SYSTEM_H_ */
