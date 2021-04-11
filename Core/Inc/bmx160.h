@@ -86,6 +86,7 @@ uint8_t BMX160_I2C_Wait_Ack(void);      // I2C Wait Ack
 void BMX160_I2C_Ack(void);              // I2C Ack
 void BMX160_I2C_NAck(void);             // I2C NAck
 
-void BMX160_WriteByte(uint8_t cmd);     // I2C Write Byte
+void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
+uint8_t BMX160_I2C_ReadByte(uint8_t ack);   //
 
 #endif

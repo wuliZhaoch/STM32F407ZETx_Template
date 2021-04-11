@@ -115,7 +115,7 @@ void BMX160_I2C_NAck(void)
   * @brief  The BMX160 Write Byte
   * @retval none
   */
-void BMX160_WriteByte(uint8_t cmd)
+void BMX160_I2C_WriteByte(uint8_t cmd)
 {
      uint8_t i = 0;
      SDA_OUT();
@@ -129,4 +129,31 @@ void BMX160_WriteByte(uint8_t cmd)
          I2C_SCL(0);
          HAL_Delay_us(2);
     }
+}
+
+/**
+  * @brief  The BMX160 Write Byte
+  * @retval Read data
+  */
+uint8_t BMX160_I2C_ReadByte(uint8_t ack)
+{
+    uint8_t i = 0;
+    uint8_t Receive_Data = 0;
+    for (i = 0; i < 8; i++)
+    {
+        I2C_SCL(0);
+        HAL_Delay_us(2);
+        I2C_SCL(1);
+        Receive_Data <<= 1;
+        if(READ_SDA) {
+            Receive_Data++;
+        }
+        HAL_Delay_us(1);
+    }
+    if (!ack){
+        BMX160_I2C_NAck();
+    } else {
+        BMX160_I2C_Ack();
+    }
+    return Receive_Data;
 }
