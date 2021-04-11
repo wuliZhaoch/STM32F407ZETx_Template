@@ -11,6 +11,10 @@
 #include "system.h"
 #include "i2c.h"
 
+#define BMX160_SDA_PIN      GPIO_PIN_9
+#define BMX160_SCL_PIN      GPIO_PIN_8
+#define BMX160_GPIO_Port    GPIOB
+
 //#define IIC_HANDLE              hi2c1
 
 //#define BMX160_TIMEOUT          1000
@@ -65,7 +69,7 @@
 /* Chip Only Read/Write Register  */
 
 
-
+void BMX160_I2C_Init(void);
 
 
 
