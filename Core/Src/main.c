@@ -33,7 +33,7 @@ int main(void)
         printf("System main_loop is: %ld\r\n", main_loop);
         main_loop++;
         HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-
+        HAL_Delay_us(1000000);
     }
 
 }
