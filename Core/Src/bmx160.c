@@ -37,9 +37,9 @@ void BMX160_I2C_Start(void)
     SDA_OUT();
     I2C_SDA(1);
     I2C_SCL(1);
-// YANSHI 4US
+    HAL_Delay_us(4);
     I2C_SDA(0);
-// YANSHI 4US
+    HAL_Delay_us(4);
     I2C_SCL(0);
 }
 
@@ -52,8 +52,8 @@ void BMX160_I2C_Stop(void)
     SDA_OUT();
     I2C_SDA(0);
     I2C_SCL(0);
-// YANSHI 4US
+    HAL_Delay_us(4);
     I2C_SDA(1);
-// YANSHI 4US
+    HAL_Delay_us(4);
     I2C_SCL(1);
 }
