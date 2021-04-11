@@ -11,9 +11,9 @@
 #include "system.h"
 #include "i2c.h"
 
-#define IIC_HANDLE              hi2c1
+//#define IIC_HANDLE              hi2c1
 
-#define BMX160_TIMEOUT          1000
+//#define BMX160_TIMEOUT          1000
 
 #define BMX160_WRITE_ADDRESS    0XD0
 #define BMX160_READ_ADDRESS     0XD1
@@ -67,11 +67,6 @@
 
 
 
-uint8_t BMX160_ByteWrite(uint16_t Addr, uint8_t* data, uint32_t Time_out);
-uint8_t BMX160_MultiByteWrite(uint16_t Addr, uint8_t* data, uint16_t size, uint32_t Time_out);
-
-uint8_t BMX160_ByteRead(uint16_t Addr, uint8_t* read_buff, uint32_t Time_out);
-uint8_t BMX160_MultiByteRead(uint16_t Addr, uint8_t* read_buff, uint16_t size, uint32_t Time_out);
 
 
 #endif
