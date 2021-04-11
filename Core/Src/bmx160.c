@@ -8,6 +8,10 @@
 #include "bmx160.h"
 
 
+/**
+  * @brief BMX160 initializes the function
+  * @retval none
+  */
 void BMX160_I2C_Init(void)
 {
     GPIO_InitTypeDef GPIO_InitStruct = {0};
@@ -21,4 +25,35 @@ void BMX160_I2C_Init(void)
     HAL_GPIO_Init(BMX160_GPIO_Port, &GPIO_InitStruct);
 
     HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN | BMX160_SCL_PIN, GPIO_PIN_SET);
+}
+
+
+/**
+  * @brief  The BMX160 starts the signal function
+  * @retval none
+  */
+void BMX160_I2C_Start(void)
+{
+    SDA_OUT();
+    I2C_SDA(1);
+    I2C_SCL(1);
+// YANSHI 4US
+    I2C_SDA(0);
+// YANSHI 4US
+    I2C_SCL(0);
+}
+
+/**
+  * @brief  The BMX160 stop the signal function
+  * @retval none
+  */
+void BMX160_I2C_Stop(void)
+{
+    SDA_OUT();
+    I2C_SDA(0);
+    I2C_SCL(0);
+// YANSHI 4US
+    I2C_SDA(1);
+// YANSHI 4US
+    I2C_SCL(1);
 }

@@ -15,6 +15,14 @@
 #define BMX160_SCL_PIN      GPIO_PIN_8
 #define BMX160_GPIO_Port    GPIOB
 
+
+#define I2C_SDA(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_RESET))
+#define I2C_SCL(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_RESET))
+#define READ_SDA        HAL_GPIO_ReadPin(BMX160_GPIO_Port, BMX160_SDA_PIN);
+
+#define SDA_IN()        {GPIOB->MODER&=~(3<<(9*2));GPIOB->MODER|=0<<9*2;}   // Input Mode
+#define SDA_OUT()       {GPIOB->MODER&=~(3<<(9*2));GPIOB->MODER|=1<<9*2;}   // Output Mode
+
 //#define IIC_HANDLE              hi2c1
 
 //#define BMX160_TIMEOUT          1000
@@ -69,8 +77,9 @@
 /* Chip Only Read/Write Register  */
 
 
-void BMX160_I2C_Init(void);
-
+void BMX160_I2C_Init(void);     // I2C Initialize
+void BMX160_I2C_Start(void);    // I2C Start Signal
+void BMX160_I2C_Stop(void);     // I2C Stop Signal
 
 
 #endif
