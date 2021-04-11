@@ -35,12 +35,12 @@ void BMX160_I2C_Init(void)
 void BMX160_I2C_Start(void)
 {
     SDA_OUT();
-    I2C_SDA(1);
-    I2C_SCL(1);
+    I2C_SDA_SET;
+    I2C_SCL_SET;
     HAL_Delay_us(4);
-    I2C_SDA(0);
+    I2C_SDA_RESET;
     HAL_Delay_us(4);
-    I2C_SCL(0);
+    I2C_SCL_RESET;
 }
 
 /**
@@ -50,12 +50,14 @@ void BMX160_I2C_Start(void)
 void BMX160_I2C_Stop(void)
 {
     SDA_OUT();
-    I2C_SDA(0);
-    I2C_SCL(0);
+    I2C_SCL_RESET;
+    I2C_SDA_RESET;
+
     HAL_Delay_us(4);
-    I2C_SDA(1);
+
+    I2C_SCL_SET;
+    I2C_SDA_SET;
     HAL_Delay_us(4);
-    I2C_SCL(1);
 }
 
 /**
@@ -67,8 +69,8 @@ uint8_t BMX160_I2C_Wait_Ack(void)
 {
     uint8_t ucErrTime = 0;
     SDA_IN();
-    I2C_SDA(1);HAL_Delay_us(1);
-    I2C_SCL(1);HAL_Delay_us(1);
+    I2C_SDA_SET;HAL_Delay_us(1);
+    I2C_SCL_SET;HAL_Delay_us(1);
     while (READ_SDA)
     {
         ucErrTime++;
@@ -77,7 +79,7 @@ uint8_t BMX160_I2C_Wait_Ack(void)
             return 1;
         }
     }
-    I2C_SCL(0);
+    I2C_SCL_RESET;
     return 0;
 }
 
@@ -87,13 +89,13 @@ uint8_t BMX160_I2C_Wait_Ack(void)
   */
 void BMX160_I2C_Ack(void)
 {
-    I2C_SCL(0);
+    I2C_SCL_RESET;
     SDA_OUT();
-    I2C_SDA(0);
+    I2C_SDA_RESET;
     HAL_Delay_us(2);
-    I2C_SCL(1);
+    I2C_SCL_SET;
     HAL_Delay_us(2);
-    I2C_SCL(0);
+    I2C_SCL_RESET;
 }
 
 /**
@@ -102,37 +104,45 @@ void BMX160_I2C_Ack(void)
   */
 void BMX160_I2C_NAck(void)
 {
-    I2C_SCL(0);
+    I2C_SCL_RESET;
     SDA_OUT();
-    I2C_SDA(1);
+    I2C_SDA_SET;
     HAL_Delay_us(2);
-    I2C_SCL(1);
+    I2C_SCL_SET;
     HAL_Delay_us(2);
-    I2C_SCL(0);
+    I2C_SCL_RESET;
 }
 
 /**
-  * @brief  The BMX160 Write Byte
+  * @brief  The BMX160 I2C Write Byte
   * @retval none
   */
 void BMX160_I2C_WriteByte(uint8_t cmd)
 {
      uint8_t i = 0;
      SDA_OUT();
-     I2C_SCL(0);
+     I2C_SCL_RESET;
      for (i= 0; i < 8; i++) {
-         I2C_SDA((cmd&0x80) >> 7);
+         if ((cmd&0x80) >> 7)
+         {
+             I2C_SDA_SET;
+         } else {
+             I2C_SDA_RESET;
+         }
+         HAL_Delay_us(2);
+         I2C_SCL_SET;
+//         I2C_SDA((cmd&0x80) >> 7);
          cmd <<= 1;
+//         HAL_Delay_us(2);
+//         I2C_SCL(1);
          HAL_Delay_us(2);
-         I2C_SCL(1);
-         HAL_Delay_us(2);
-         I2C_SCL(0);
+         I2C_SCL_RESET;
          HAL_Delay_us(2);
     }
 }
 
 /**
-  * @brief  The BMX160 Write Byte
+  * @brief  The BMX160 I2C Read Byte
   * @retval Read data
   */
 uint8_t BMX160_I2C_ReadByte(uint8_t ack)
@@ -141,13 +151,14 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
     uint8_t Receive_Data = 0;
     for (i = 0; i < 8; i++)
     {
-        I2C_SCL(0);
+        I2C_SCL_RESET;
         HAL_Delay_us(2);
-        I2C_SCL(1);
+
         Receive_Data <<= 1;
         if(READ_SDA) {
             Receive_Data++;
         }
+        I2C_SCL_SET;
         HAL_Delay_us(1);
     }
     if (!ack){
@@ -156,4 +167,35 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
         BMX160_I2C_Ack();
     }
     return Receive_Data;
+}
+
+/**
+  * @brief  The BMX160 I2C Write Byte
+  * @retval none
+  */
+void BMX160_Write_Byte(uint8_t Address)
+{
+    BMX160_I2C_Start();
+//    BMX160_I2C_WriteByte();
+}
+
+/**
+  * @brief  The BMX160 I2C Read Byte
+  * @retval Read data
+  */
+uint8_t BMX160_Read_Byte(uint16_t Address)
+{
+    uint8_t temp = 0;
+    BMX160_I2C_Start();
+    BMX160_I2C_WriteByte((0x68<<1)|0);
+//    BMX160_I2C_Wait_Ack();
+    BMX160_I2C_WriteByte(Address);
+//    BMX160_I2C_Wait_Ack();
+    BMX160_I2C_Start();
+    BMX160_I2C_WriteByte((0x68<<1)|1);
+//    BMX160_I2C_Wait_Ack();
+
+    temp = BMX160_I2C_ReadByte(0);
+    BMX160_I2C_Stop();
+    return temp;
 }

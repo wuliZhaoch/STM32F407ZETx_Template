@@ -18,15 +18,19 @@ int main(void)
 
     HAL_Delay_init();
 
+
     MX_GPIO_Init();
     MX_DMA_Init();
     MX_USART1_UART_Init();
 //    MX_I2C1_Init();
+    BMX160_I2C_Init();
+
 
     GET_ChipID(&SystemChipID);
     printf("System chipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,
             SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
-
+    HAL_Delay(1000);
+    bmx160_chipid = BMX160_Read_Byte(0x00);
 
     while (1) {
 

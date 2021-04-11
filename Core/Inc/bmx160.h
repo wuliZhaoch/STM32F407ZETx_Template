@@ -16,9 +16,13 @@
 #define BMX160_SCL_PIN      GPIO_PIN_8
 #define BMX160_GPIO_Port    GPIOB
 
+#define I2C_SDA_SET         HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_SET)
+#define I2C_SDA_RESET       HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_RESET)
+#define I2C_SCL_SET         HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_SET)
+#define I2C_SCL_RESET       HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_RESET)
 
-#define I2C_SDA(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_RESET))
-#define I2C_SCL(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_RESET))
+//#define I2C_SDA(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_RESET))
+//#define I2C_SCL(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_RESET))
 #define READ_SDA        HAL_GPIO_ReadPin(BMX160_GPIO_Port, BMX160_SDA_PIN)
 
 #define SDA_IN()        {GPIOB->MODER&=~(3<<(9*2));GPIOB->MODER|=0<<9*2;}   // Input Mode
@@ -87,6 +91,10 @@ void BMX160_I2C_Ack(void);              // I2C Ack
 void BMX160_I2C_NAck(void);             // I2C NAck
 
 void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
-uint8_t BMX160_I2C_ReadByte(uint8_t ack);   //
+uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
+
+void BMX160_Write_Byte(uint8_t Address);
+uint8_t BMX160_Read_Byte(uint16_t Address);
+
 
 #endif
