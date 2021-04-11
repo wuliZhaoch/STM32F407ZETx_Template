@@ -78,13 +78,14 @@
 /* Chip Only Read/Write Register  */
 
 
-void BMX160_I2C_Init(void);         // I2C Initialize
-void BMX160_I2C_Start(void);        // I2C Start Signal
-void BMX160_I2C_Stop(void);         // I2C Stop Signal
+void BMX160_I2C_Init(void);             // I2C Initialize
+void BMX160_I2C_Start(void);            // I2C Start Signal
+void BMX160_I2C_Stop(void);             // I2C Stop Signal
 
-uint8_t BMX160_I2C_Wait_Ack(void);     // I2C Wait Ack
-void BMX160_I2C_Ack(void);          // I2C Ack
-void BMX160_I2C_NAck(void);         // I2C NAck
+uint8_t BMX160_I2C_Wait_Ack(void);      // I2C Wait Ack
+void BMX160_I2C_Ack(void);              // I2C Ack
+void BMX160_I2C_NAck(void);             // I2C NAck
 
+void BMX160_WriteByte(uint8_t cmd);     // I2C Write Byte
 
 #endif
