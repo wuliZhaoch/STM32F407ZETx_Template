@@ -57,3 +57,56 @@ void BMX160_I2C_Stop(void)
     HAL_Delay_us(4);
     I2C_SCL(1);
 }
+
+/**
+  * @brief  The BMX160 Wait Ack Signal Function
+  * @retval  1->Failed to receive reply
+             0->Receive reply successful
+  */
+uint8_t BMX160_I2C_Wait_Ack(void)
+{
+    uint8_t ucErrTime = 0;
+    SDA_IN();
+    I2C_SDA(1);HAL_Delay_us(1);
+    I2C_SCL(1);HAL_Delay_us(1);
+    while (READ_SDA)
+    {
+        ucErrTime++;
+        if (ucErrTime > 250) {
+            BMX160_I2C_Stop();
+            return 1;
+        }
+    }
+    I2C_SCL(0);
+    return 0;
+}
+
+/**
+  * @brief  The BMX160 Ack Signal Function
+  * @retval none
+  */
+void BMX160_I2C_Ack(void)
+{
+    I2C_SCL(0);
+    SDA_OUT();
+    I2C_SDA(0);
+    HAL_Delay_us(2);
+    I2C_SCL(1);
+    HAL_Delay_us(2);
+    I2C_SCL(0);
+}
+
+/**
+  * @brief  The BMX160 NAck Signal Function
+  * @retval none
+  */
+void BMX160_I2C_NAck(void)
+{
+    I2C_SCL(0);
+    SDA_OUT();
+    I2C_SDA(1);
+    HAL_Delay_us(2);
+    I2C_SCL(1);
+    HAL_Delay_us(2);
+    I2C_SCL(0);
+}

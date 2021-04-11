@@ -9,6 +9,7 @@
 
 #include "main.h"
 #include "system.h"
+#include "delay.h"
 //#include "i2c.h"
 
 #define BMX160_SDA_PIN      GPIO_PIN_9
@@ -18,7 +19,7 @@
 
 #define I2C_SDA(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SDA_PIN, GPIO_PIN_RESET))
 #define I2C_SCL(n)  (n?HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_SET):HAL_GPIO_WritePin(BMX160_GPIO_Port, BMX160_SCL_PIN, GPIO_PIN_RESET))
-#define READ_SDA        HAL_GPIO_ReadPin(BMX160_GPIO_Port, BMX160_SDA_PIN);
+#define READ_SDA        HAL_GPIO_ReadPin(BMX160_GPIO_Port, BMX160_SDA_PIN)
 
 #define SDA_IN()        {GPIOB->MODER&=~(3<<(9*2));GPIOB->MODER|=0<<9*2;}   // Input Mode
 #define SDA_OUT()       {GPIOB->MODER&=~(3<<(9*2));GPIOB->MODER|=1<<9*2;}   // Output Mode
@@ -77,9 +78,13 @@
 /* Chip Only Read/Write Register  */
 
 
-void BMX160_I2C_Init(void);     // I2C Initialize
-void BMX160_I2C_Start(void);    // I2C Start Signal
-void BMX160_I2C_Stop(void);     // I2C Stop Signal
+void BMX160_I2C_Init(void);         // I2C Initialize
+void BMX160_I2C_Start(void);        // I2C Start Signal
+void BMX160_I2C_Stop(void);         // I2C Stop Signal
+
+uint8_t BMX160_I2C_Wait_Ack(void);     // I2C Wait Ack
+void BMX160_I2C_Ack(void);          // I2C Ack
+void BMX160_I2C_NAck(void);         // I2C NAck
 
 
 #endif
