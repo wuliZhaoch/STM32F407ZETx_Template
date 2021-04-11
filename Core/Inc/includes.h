@@ -26,4 +26,6 @@
 
 #include "bmx160.h"
 
+#include "delay.h"
+
 #endif /* INCLUDES_H_ */

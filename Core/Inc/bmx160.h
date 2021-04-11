@@ -9,7 +9,7 @@
 
 #include "main.h"
 #include "system.h"
-#include "i2c.h"
+//#include "i2c.h"
 
 #define BMX160_SDA_PIN      GPIO_PIN_9
 #define BMX160_SCL_PIN      GPIO_PIN_8
