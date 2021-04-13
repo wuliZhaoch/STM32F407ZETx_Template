@@ -35,6 +35,8 @@
 #define BMX160_WRITE_ADDRESS    0XD0
 #define BMX160_READ_ADDRESS     0XD1
 
+#define BMX160_CHIPID_RET_VALUE 0XD8
+
 /* Chip Only Read Register  */
 #define BMX160_CHIPID           0x00
 #define BMX160_ERR_REG          0X02

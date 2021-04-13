@@ -3,7 +3,7 @@
 uint32_t main_loop = 0;
 
 ChipIDTypeDef SystemChipID;
-uint8_t bmx160_chipid = 0;
+uint8_t BMX160_Chip_ID = 0;
 
 /**
   * @brief  The application entry point.
@@ -27,10 +27,17 @@ int main(void)
 
 
     GET_ChipID(&SystemChipID);
-    printf("System chipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,
-            SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
+    printf("System chipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
     HAL_Delay(1000);
-    bmx160_chipid = BMX160_Read_Byte(0x00);
+
+    BMX160_Chip_ID = BMX160_Read_Byte(BMX160_CHIPID);
+    if (BMX160_Chip_ID == BMX160_CHIPID_RET_VALUE)
+    {
+        printf("BMX160 ChipID is: 0x%x\r\n", BMX160_Chip_ID);
+    } else {
+        printf("BMX160 ChipID Read Fail\r\n");
+    }
+
 
     while (1) {
 
