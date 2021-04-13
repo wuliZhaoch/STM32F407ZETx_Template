@@ -82,7 +82,79 @@
 #define BMX160_FIFO_DATA        0X24
 
 /* Chip Only Read/Write Register  */
+#define BMX160_ACC_CONF         0X40
+#define BMX160_ACC_RANGE        0X41
 
+#define BMX160_GYR_CONF         0X42
+#define BMX160_GYR_RANGE        0X43
+#define BMX160_MAG_CONF         0X44
+
+#define BMX160_FIFO_DOWNS       0X45
+#define BMX160_FIFO_CONFIG0     0X46
+#define BMX160_FIFO_CONFIG1     0X47
+
+#define BMX160_MAG_IF0          0X4C
+#define BMX160_MAG_IF1          0X4D
+#define BMX160_MAG_IF2          0X4E
+#define BMX160_MAG_IF3          0X4F
+
+#define BMX160_INT_EN0          0X50
+#define BMX160_INT_EN1          0X51
+#define BMX160_INT_EN2          0X52
+
+#define BMX160_INT_OUT_CTRL     0X53
+#define BMX160_INT_LATCH        0X54
+
+#define BMX160_INT_MAP0         0X55
+#define BMX160_INT_MAP1         0X56
+#define BMX160_INT_MAP2         0X57
+
+#define BMX160_INT_DATA0        0X58
+#define BMX160_INT_DATA1        0X59
+
+#define BMX160_INT_LOWHIGH0     0X5A
+#define BMX160_INT_LOWHIGH1     0X5B
+#define BMX160_INT_LOWHIGH2     0X5C
+#define BMX160_INT_LOWHIGH3     0X5D
+#define BMX160_INT_LOWHIGH4     0X5E
+
+#define BMX160_INT_MOTION0      0X5F
+#define BMX160_INT_MOTION1      0X60
+#define BMX160_INT_MOTION2      0X61
+#define BMX160_INT_MOTION3      0X62
+
+#define BMX160_INT_TAP0         0X63
+#define BMX160_INT_TAP1         0X64
+
+#define BMX160_INT_ORIENT0      0X65
+#define BMX160_INT_ORIENT1      0X66
+
+#define BMX160_INT_FLAT0        0X67
+#define BMX160_INT_FLAT1        0X68
+
+#define BMX160_FOC_CONF         0X69
+#define BMX160_CONF             0X6A
+#define BMX160_IF_CONF          0X6B
+#define BMX160_PMU_TRIGGER      0X6C
+#define BMX160_SELF_TEST        0X6D
+
+#define BMX160_NV_CONF          0X70
+
+#define BMX160_OFFSET0          0X71
+#define BMX160_OFFSET1          0X72
+#define BMX160_OFFSET2          0X73
+#define BMX160_OFFSET3          0X74
+#define BMX160_OFFSET4          0X75
+#define BMX160_OFFSET5          0X76
+#define BMX160_OFFSET6          0X77
+
+#define BMX160_STEP_CNT0        0X78
+#define BMX160_STEP_CNT1        0X79
+
+#define BMX160_STEP_CONF0       0X7A
+#define BMX160_STEP_CONF1       0X7B
+
+#define BMX160_CMD              0X7E
 
 void BMX160_I2C_Init(void);             // I2C Initialize
 void BMX160_I2C_Start(void);            // I2C Start Signal
