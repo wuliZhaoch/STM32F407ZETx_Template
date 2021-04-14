@@ -30,10 +30,17 @@
 
 //#define IIC_HANDLE              hi2c1
 
-//#define BMX160_TIMEOUT          1000
+#define BMX160_TIMEOUT          1000
 
-#define BMX160_WRITE_ADDRESS    0XD0
-#define BMX160_READ_ADDRESS     0XD1
+
+/*
+ * SDO -> GND   Device Address 0x68 (The lowest read/write bit is not included)
+ * SDO -> VDDIO Device Address 0x69 (The lowest read/write bit is not included)
+ *  */
+#define BMX160_DEVICE_ADDR      0X68    //  BMX160 Device Address
+
+#define BMX160_WRITE_ADDRESS    ((BMX160_DEVICE_ADDR << 1) | 0)    //  ((0X68 << 1) | 0)   Write Address
+#define BMX160_READ_ADDRESS     ((BMX160_DEVICE_ADDR << 1) | 1)    //  ((0x68 << 1) | 1)   Read Address
 
 #define BMX160_CHIPID_RET_VALUE 0XD8
 
@@ -168,7 +175,7 @@ void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
 uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
 
 void BMX160_Write_Byte(uint8_t Address);
-uint8_t BMX160_Read_Byte(uint16_t Address);
+uint8_t BMX160_Read_Byte(uint8_t reg);
 
 
 #endif

@@ -5,6 +5,7 @@ uint32_t main_loop = 0;
 ChipIDTypeDef SystemChipID;
 uint8_t BMX160_Chip_ID = 0;
 
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -31,8 +32,7 @@ int main(void)
     HAL_Delay(1000);
 
     BMX160_Chip_ID = BMX160_Read_Byte(BMX160_CHIPID);
-    if (BMX160_Chip_ID == BMX160_CHIPID_RET_VALUE)
-    {
+    if (BMX160_Chip_ID == BMX160_CHIPID_RET_VALUE) {
         printf("BMX160 ChipID is: 0x%x\r\n", BMX160_Chip_ID);
     } else {
         printf("BMX160 ChipID Read Fail\r\n");

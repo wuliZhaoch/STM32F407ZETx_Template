@@ -180,13 +180,13 @@ void BMX160_Write_Byte(uint8_t Address)
   * @brief  The BMX160 I2C Read Byte
   * @retval Read data
   */
-uint8_t BMX160_Read_Byte(uint16_t Address)
+uint8_t BMX160_Read_Byte(uint8_t reg)
 {
     uint8_t temp = 0;
     BMX160_I2C_Start();
     BMX160_I2C_WriteByte(BMX160_WRITE_ADDRESS);
     BMX160_I2C_Wait_Ack();
-    BMX160_I2C_WriteByte(Address>>8);
+    BMX160_I2C_WriteByte(reg);
     BMX160_I2C_Wait_Ack();
 
     BMX160_I2C_Start();
