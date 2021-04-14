@@ -18,5 +18,7 @@ void SystemClock_Config(void);
 
 void Error_Handler(void);
 
+void System_GetChipID(void);
+
 
 #endif /* SYSTEM_H_ */

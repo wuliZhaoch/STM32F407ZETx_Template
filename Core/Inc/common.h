@@ -21,5 +21,9 @@
 
 #include "system.h"
 
+#include "chip_id.h"
+
+#include "usart.h"
+
 
 #endif /* COMMON_H_ */
