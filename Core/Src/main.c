@@ -4,8 +4,8 @@ uint32_t main_loop = 0;
 
 ChipIDTypeDef SystemChipID;
 uint8_t BMX160_Chip_ID = 0;
-
-
+uint8_t Temperature_buffer[2] = {0};
+uint8_t aa;
 /**
   * @brief  The application entry point.
   * @retval int
@@ -38,6 +38,9 @@ int main(void)
         printf("BMX160 ChipID Read Fail\r\n");
     }
 
+    HAL_Delay(200);
+    aa = BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_TEMPERATURE0, Temperature_buffer, 2);
+    printf("Temp[0] = 0x%x\r\n Temp[1] = 0x%x\r\n", Temperature_buffer[0], Temperature_buffer[1]);
 
     while (1) {
 

@@ -177,5 +177,6 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
 uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data);
 uint8_t BMX160_Read_Byte(uint8_t reg);
 
+uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);
 
 #endif

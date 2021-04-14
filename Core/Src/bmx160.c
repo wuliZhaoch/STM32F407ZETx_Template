@@ -167,7 +167,7 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
 }
 
 /**
-  * @brief  The BMX160 I2C Write Byte
+  * @brief  The BMX160 Write Byte
   * @retval none
   */
 uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data)
@@ -190,7 +190,7 @@ uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data)
 }
 
 /**
-  * @brief  The BMX160 I2C Read Byte
+  * @brief  The BMX160 Read Byte
   * @retval Read data
   */
 uint8_t BMX160_Read_Byte(uint8_t reg)
@@ -209,4 +209,38 @@ uint8_t BMX160_Read_Byte(uint8_t reg)
     temp = BMX160_I2C_ReadByte(0);
     BMX160_I2C_Stop();
     return temp;
+}
+
+/**
+  * @brief  The BMX160 Read MultiByte
+  * @retval Read data
+  */
+uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size)
+{
+    BMX160_I2C_Start();
+    BMX160_I2C_WriteByte((DeviceAddr<<1) | 0);
+    if (BMX160_I2C_Wait_Ack())
+    {
+        BMX160_I2C_Stop();
+        return 1;
+    }
+    BMX160_I2C_WriteByte(reg);
+    BMX160_I2C_Wait_Ack();
+
+    BMX160_I2C_Start();
+    BMX160_I2C_WriteByte((DeviceAddr<<1) | 1);
+    BMX160_I2C_Wait_Ack();
+    while (Size)
+    {
+        if (Size == 1) {
+            *rev_buffer = BMX160_I2C_ReadByte(0);
+        } else {
+            *rev_buffer = BMX160_I2C_ReadByte(1);
+        }
+        Size--;
+        rev_buffer++;
+    }
+    BMX160_I2C_Stop();
+    return 0;
+
 }
