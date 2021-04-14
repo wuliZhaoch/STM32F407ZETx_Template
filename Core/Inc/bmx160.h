@@ -174,10 +174,10 @@ void BMX160_I2C_NAck(void);             // I2C NAck
 void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
 uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
 
-uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data);
-uint8_t BMX160_Read_Byte(uint8_t reg);
+uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data);   // BMX160 Write one Byte
+uint8_t BMX160_Read_Byte(uint8_t reg);                  // BMX160 Read one Byte
 
-uint8_t BMX160_Write_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);
-uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);
+uint8_t BMX160_Write_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);  // BMX160 Write Multi Byte
+uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);   // BMX160 Write Multi Byte
 
 #endif
