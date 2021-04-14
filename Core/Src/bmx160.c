@@ -170,10 +170,23 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
   * @brief  The BMX160 I2C Write Byte
   * @retval none
   */
-void BMX160_Write_Byte(uint8_t Address)
+uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data)
 {
     BMX160_I2C_Start();
-//    BMX160_I2C_WriteByte();
+    BMX160_I2C_WriteByte(BMX160_WRITE_ADDRESS);
+    if (BMX160_I2C_Wait_Ack()) {
+        BMX160_I2C_Stop();
+        return 1;
+    }
+    BMX160_I2C_WriteByte(reg);
+    BMX160_I2C_Wait_Ack();
+    BMX160_I2C_WriteByte(data);
+    if (BMX160_I2C_Wait_Ack()) {
+        BMX160_I2C_Stop();
+        return 1;
+    }
+    BMX160_I2C_Stop();
+    return 0;
 }
 
 /**

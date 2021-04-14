@@ -174,7 +174,7 @@ void BMX160_I2C_NAck(void);             // I2C NAck
 void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
 uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
 
-void BMX160_Write_Byte(uint8_t Address);
+uint8_t BMX160_Write_Byte(uint8_t reg, uint8_t data);
 uint8_t BMX160_Read_Byte(uint8_t reg);
 
 
