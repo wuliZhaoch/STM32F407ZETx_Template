@@ -275,3 +275,66 @@ uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer
     return 0;
 
 }
+
+/**
+  * @brief  The BMX160 Configuration is Initialized
+  * @retval None
+  */
+void BMX160_Config_Init(void)
+{
+    uint8_t pmu_status = 0;
+    uint8_t temp = 0;
+    uint8_t BMX160_Chip_ID = 0;
+
+    BMX160_Write_Byte(BMX160_CMD, BMX160_SOFTRESET_CMD);    //  Accelerometer Normal Mode
+    HAL_Delay(500);
+
+    /* Accelerometer Config */
+    temp = 0x26;    BMX160_Write_Byte(BMX160_ACC_CONF, temp);
+    temp = 0x0C;    BMX160_Write_Byte(BMX160_ACC_RANGE, temp);
+
+    /* Gyroscope Config */
+    temp = 0x26;    BMX160_Write_Byte(BMX160_GYR_CONF, temp);
+    temp = 0x03;    BMX160_Write_Byte(BMX160_GYR_RANGE, temp);
+
+    BMX160_Write_Byte(BMX160_CMD, BMX160_ACCEL_NORMAL_MODE);    //  Accelerometer Normal Mode
+    HAL_Delay(500);
+
+    BMX160_Write_Byte(BMX160_CMD, BMX160_GYRO_NORMAL_MODE);     //  Gyroscope Normal Mode
+    HAL_Delay(500);
+
+    BMX160_Write_Byte(BMX160_CMD, BMX160_MAGN_NORMAL_MODE);     //  Magnetometer Normal Mode
+    HAL_Delay(500);
+
+    pmu_status = BMX160_Read_Byte(BMX160_PMU_STATUS);   // Read PMU Status
+    if (pmu_status == 0x15)
+    {
+        printf("BMX160 Sensor In Normal Mode!\r\n");
+    }
+
+    BMX160_Chip_ID = BMX160_Read_Byte(BMX160_CHIPID);
+    if (BMX160_Chip_ID == BMX160_CHIPID_RET_VALUE) {
+        printf("BMX160 ChipID is: 0x%x\r\n", BMX160_Chip_ID);
+    } else {
+        printf("BMX160 ChipID Read Fail\r\n");
+    }
+
+}
+
+/**
+  * @brief  Get BMX160 temperature
+  * @retval None
+  */
+uint16_t BMX160_GetTemperature(void)
+{
+    uint8_t Temperature_buffer[2] = {0};
+    uint16_t ret;
+    Temperature_buffer[0] = BMX160_Read_Byte(BMX160_TEMPERATURE0);
+    Temperature_buffer[1] = BMX160_Read_Byte(BMX160_TEMPERATURE1);
+    ret = (Temperature_buffer[1] << 8) | Temperature_buffer[0];
+    printf("Temperature is: 0x%x --> %.3f\r\n", ret, ((float)ret / 512.0) + 23.0);
+
+    return ret;
+}
+
+

@@ -10,6 +10,7 @@
 #include "main.h"
 #include "system.h"
 #include "delay.h"
+#include "usart.h"
 //#include "i2c.h"
 
 #define BMX160_SDA_PIN      GPIO_PIN_9
@@ -163,6 +164,28 @@
 
 #define BMX160_CMD              0X7E
 
+/** Soft reset command */
+#define BMX160_SOFTRESET_CMD            0xB6    //  BMX160 Reset
+
+/** Power mode settings */
+/* Accel power mode */
+#define BMX160_ACCEL_SUSPEND_MODE       0x10    //  Accelerometer Suspend Mode
+#define BMX160_ACCEL_NORMAL_MODE        0x11    //  Accelerometer Normal Mode
+#define BMX160_ACCEL_LOWPOWER_MODE      0x12    //  Accelerometer LowPower Mode
+
+/* Gyro power mode */
+#define BMX160_GYRO_SUSPEND_MODE        0x14    //  Gyroscope Suspend Mode
+#define BMX160_GYRO_NORMAL_MODE         0x15    //  Gyroscope Normal Mode
+#define BMX160_GYRO_FASTSTARTUP_MODE    0x17    //  Gyroscope FastStartUP Mode
+
+/* Magn power mode */
+#define BMX160_MAGN_SUSPEND_MODE        0x18    //  Magnetometer Suspend Mode
+#define BMX160_MAGN_NORMAL_MODE         0x19    //  Magnetometer Normal Mode
+#define BMX160_MAGN_LOWPOWER_MODE       0x1A    //  Magnetometer LowPower Mode
+
+
+
+
 void BMX160_I2C_Init(void);             // I2C Initialize
 void BMX160_I2C_Start(void);            // I2C Start Signal
 void BMX160_I2C_Stop(void);             // I2C Stop Signal
@@ -179,5 +202,8 @@ uint8_t BMX160_Read_Byte(uint8_t reg);                  // BMX160 Read one Byte
 
 uint8_t BMX160_Write_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);  // BMX160 Write Multi Byte
 uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer, uint16_t Size);   // BMX160 Write Multi Byte
+
+void BMX160_Config_Init(void);          // The BMX160 configuration is initialized
+uint16_t BMX160_GetTemperature(void);   // Get BMX160 temperature
 
 #endif
