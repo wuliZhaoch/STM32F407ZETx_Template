@@ -2,7 +2,7 @@
 
 uint32_t main_loop = 0;
 
-
+ChipIDTypeDef SystemChipID;
 
 
 
@@ -19,7 +19,6 @@ int main(void)
 
     HAL_Delay_init();       // System Delay Init
 
-    System_GetChipID();     // Get Chip ID
 
 
     MX_GPIO_Init();
@@ -27,6 +26,8 @@ int main(void)
     MX_USART1_UART_Init();
 //    MX_I2C1_Init();
     BMX160_I2C_Init();
+
+    System_GetChipID();     // Get Chip ID
 
     BMX160_Config_Init();
     BMX160_GetTemperature();

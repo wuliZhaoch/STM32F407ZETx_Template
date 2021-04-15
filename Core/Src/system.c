@@ -7,15 +7,7 @@
 
 #include "system.h"
 
-ChipIDTypeDef SystemChipID;
 
-
-void System_GetChipID(void)
-{
-    GET_ChipID(&SystemChipID);
-    printf("System ChipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,
-            SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
-}
 
 void RCC_CLK_Enable(void)
 {
