@@ -147,7 +147,7 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
 {
     uint8_t i = 0;
     uint8_t Receive_Data = 0;
-//    SDA_IN();
+    SDA_IN();
     for (i = 0; i < 8; i++)
     {
         I2C_SCL_RESET;
@@ -330,8 +330,9 @@ uint16_t BMX160_GetTemperature(void)
 {
     uint8_t Temperature_buffer[2] = {0};
     uint16_t ret;
-    Temperature_buffer[0] = BMX160_Read_Byte(BMX160_TEMPERATURE0);
-    Temperature_buffer[1] = BMX160_Read_Byte(BMX160_TEMPERATURE1);
+//    Temperature_buffer[0] = BMX160_Read_Byte(BMX160_TEMPERATURE0);
+//    Temperature_buffer[1] = BMX160_Read_Byte(BMX160_TEMPERATURE1);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_TEMPERATURE0, Temperature_buffer, 2);
     ret = (Temperature_buffer[1] << 8) | Temperature_buffer[0];
     printf("Temperature is: 0x%x --> %.3f\r\n", ret, ((float)ret / 512.0) + 23.0);
 
@@ -370,14 +371,14 @@ void BMX160_GetGyroscope(uint8 *rev_buffer)
     int16_t Gyroscope_x = 0;
     int16_t Gyroscope_y = 0;
     int16_t Gyroscope_z = 0;
-    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA8);
-    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA9);
-    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA10);
-    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA11);
-    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA12);
-    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA13);
+//    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA8);
+//    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA9);
+//    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA10);
+//    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA11);
+//    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA12);
+//    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA13);
 
-//    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, 6);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA8, rev_buffer, 6);
     Gyroscope_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
     Gyroscope_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
     Gyroscope_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
@@ -395,16 +396,16 @@ void BMX160_GetMagnetometer(uint8 *rev_buffer)
     int16_t Magnetometer_z = 0;
     int16_t Magnetometer_rhall = 0;
 
-    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA0);
-    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA1);
-    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA2);
-    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA3);
-    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA4);
-    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA5);
-    rev_buffer[6] = BMX160_Read_Byte(BMX160_DATA6);
-    rev_buffer[7] = BMX160_Read_Byte(BMX160_DATA7);
+//    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA0);
+//    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA1);
+//    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA2);
+//    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA3);
+//    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA4);
+//    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA5);
+//    rev_buffer[6] = BMX160_Read_Byte(BMX160_DATA6);
+//    rev_buffer[7] = BMX160_Read_Byte(BMX160_DATA7);
 
-//    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, 6);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA0, rev_buffer, 6);
     Magnetometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
     Magnetometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
     Magnetometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
