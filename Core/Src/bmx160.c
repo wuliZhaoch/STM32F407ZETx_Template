@@ -291,12 +291,12 @@ void BMX160_Config_Init(void)
     HAL_Delay(500);
 
     /* Accelerometer Config */
-    temp = 0x26;    BMX160_Write_Byte(BMX160_ACC_CONF, temp);
-    temp = 0x0C;    BMX160_Write_Byte(BMX160_ACC_RANGE, temp);
+    temp = 0x28;    BMX160_Write_Byte(BMX160_ACC_CONF, temp);
+    temp = 0x03;    BMX160_Write_Byte(BMX160_ACC_RANGE, temp);
 
     /* Gyroscope Config */
-    temp = 0x26;    BMX160_Write_Byte(BMX160_GYR_CONF, temp);
-    temp = 0x03;    BMX160_Write_Byte(BMX160_GYR_RANGE, temp);
+    temp = 0x28;    BMX160_Write_Byte(BMX160_GYR_CONF, temp);
+    temp = 0x00;    BMX160_Write_Byte(BMX160_GYR_RANGE, temp);
 
     BMX160_Write_Byte(BMX160_CMD, BMX160_ACCEL_NORMAL_MODE);    //  Accelerometer Normal Mode
     HAL_Delay(500);
@@ -345,9 +345,12 @@ uint16_t BMX160_GetTemperature(void)
   */
 void BMX160_GetAccelerometer(uint8 *rev_buffer)
 {
-    int16_t Accelerometer_x = 0;
-    int16_t Accelerometer_y = 0;
-    int16_t Accelerometer_z = 0;
+    uint16_t Accelerometer_x = 0;
+    uint16_t Accelerometer_y = 0;
+    uint16_t Accelerometer_z = 0;
+    float Accelerometer_short_x = 0;
+    float Accelerometer_short_y = 0;
+    float Accelerometer_short_z = 0;
 //    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA14);
 //    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA15);
 //    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA16);
@@ -356,9 +359,47 @@ void BMX160_GetAccelerometer(uint8 *rev_buffer)
 //    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA19);
 
     BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, ACC_DATA_LEN);
-    Accelerometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
-    Accelerometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
-    Accelerometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
+    Accelerometer_x = (rev_buffer[1]<<8) | rev_buffer[0];
+    Accelerometer_y = (rev_buffer[3]<<8) | rev_buffer[2];
+    Accelerometer_z = (rev_buffer[5]<<8) | rev_buffer[4];
+    if ((Accelerometer_x & 0x8000) == 0x8000)
+    {
+        Accelerometer_x = (~Accelerometer_x) + 1;
+        Accelerometer_short_x = ((float) Accelerometer_x) * 9.8 * 2 / 32768.0;
+        printf("\r\nX-> -%f\r\n", Accelerometer_short_x);
+    } else {
+        Accelerometer_short_x = ((float)Accelerometer_x) * 9.8 * 2 / 32768.0;
+        printf("\r\nX-> %f\r\n", Accelerometer_short_x);
+    }
+
+    if ((Accelerometer_y & 0x8000) == 0x8000)
+    {
+        Accelerometer_y = (~Accelerometer_y) + 1;
+        Accelerometer_short_y = ((float) Accelerometer_y) * 9.8 * 2 / 32768.0;
+        printf("Y-> -%f\r\n", Accelerometer_short_y);
+    } else {
+        Accelerometer_short_y = ((float)(Accelerometer_y)) * 9.8 * 2 / 32768.0;
+        printf("Y-> %f\r\n", Accelerometer_short_y);
+    }
+
+    if (Accelerometer_z > 0x7FFF)
+    {
+        Accelerometer_z = -(0xFFFF-Accelerometer_z);
+        Accelerometer_short_z = (((float) Accelerometer_z) * 9.8) / (0x8000/2);
+        printf("Z-> -%f\r\n", Accelerometer_short_z);
+    } else {
+        Accelerometer_short_z = (((float) Accelerometer_z) * 9.8) / (0x8000/2);
+        printf("Z-> %f\r\n", Accelerometer_short_z);
+    }
+//    if ((Accelerometer_z & 0x8000) == 0x8000)
+//    {
+//        Accelerometer_z = (~Accelerometer_z) + 1;
+//        Accelerometer_short_z = ((float) Accelerometer_z) * 9.8 * 2 / 32768.0;
+//        printf("Z-> -%f\r\n", Accelerometer_short_z);
+//    } else {
+//        Accelerometer_short_z = ((float)(Accelerometer_z)) * 9.8 * 2 / 32768.0;
+//        printf("Z-> %f\r\n", Accelerometer_short_z);
+//    }
 
 }
 

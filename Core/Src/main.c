@@ -2,7 +2,7 @@
 
 uint32_t main_loop = 0;
 
-ChipIDTypeDef SystemChipID;
+
 
 uint8_t Acc_Buffer[ACC_DATA_LEN] = {0};
 uint8_t Gyr_Buffer[GRY_DATA_LEN] = {0};
@@ -46,7 +46,7 @@ int main(void)
 //        printf("System main_loop is: %ld\r\n", main_loop);
 //        main_loop++;
         HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-        HAL_Delay_us(2000000);
+        HAL_Delay_ms(1000);
     }
 
 }
