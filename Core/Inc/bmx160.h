@@ -33,6 +33,9 @@
 
 #define BMX160_TIMEOUT          1000
 
+#define ACC_DATA_LEN            6
+#define GRY_DATA_LEN            6
+#define MAG_DATA_LEN            8
 
 /*
  * SDO -> GND   Device Address 0x68 (The lowest read/write bit is not included)

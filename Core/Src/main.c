@@ -4,9 +4,9 @@ uint32_t main_loop = 0;
 
 ChipIDTypeDef SystemChipID;
 
-uint8_t Acc_Buffer[6] = {0};
-uint8_t Gyr_Buffer[6] = {0};
-uint8_t Mag_Buffer[8] = {0};
+uint8_t Acc_Buffer[ACC_DATA_LEN] = {0};
+uint8_t Gyr_Buffer[GRY_DATA_LEN] = {0};
+uint8_t Mag_Buffer[MAG_DATA_LEN] = {0};
 
 /**
   * @brief  The application entry point.

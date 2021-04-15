@@ -355,7 +355,7 @@ void BMX160_GetAccelerometer(uint8 *rev_buffer)
 //    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA18);
 //    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA19);
 
-    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, 6);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, ACC_DATA_LEN);
     Accelerometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
     Accelerometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
     Accelerometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
@@ -378,7 +378,7 @@ void BMX160_GetGyroscope(uint8 *rev_buffer)
 //    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA12);
 //    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA13);
 
-    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA8, rev_buffer, 6);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA8, rev_buffer, GRY_DATA_LEN);
     Gyroscope_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
     Gyroscope_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
     Gyroscope_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
@@ -405,7 +405,7 @@ void BMX160_GetMagnetometer(uint8 *rev_buffer)
 //    rev_buffer[6] = BMX160_Read_Byte(BMX160_DATA6);
 //    rev_buffer[7] = BMX160_Read_Byte(BMX160_DATA7);
 
-    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA0, rev_buffer, 6);
+    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA0, rev_buffer, MAG_DATA_LEN);
     Magnetometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
     Magnetometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
     Magnetometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
