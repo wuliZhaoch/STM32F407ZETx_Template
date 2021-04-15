@@ -4,7 +4,9 @@ uint32_t main_loop = 0;
 
 ChipIDTypeDef SystemChipID;
 
-
+uint8_t Acc_Buffer[6] = {0};
+uint8_t Gyr_Buffer[6] = {0};
+uint8_t Mag_Buffer[8] = {0};
 
 /**
   * @brief  The application entry point.
@@ -33,11 +35,14 @@ int main(void)
     BMX160_GetTemperature();
 
 
-
+    BMX160_GetAccelerometer(Acc_Buffer);
 
     while (1)
     {
 
+        BMX160_GetAccelerometer(Acc_Buffer);
+        BMX160_GetGyroscope(Gyr_Buffer);
+        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);
 //        main_loop++;
         HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);

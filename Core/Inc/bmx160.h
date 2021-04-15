@@ -56,14 +56,17 @@
 #define BMX160_DATA3            0X07
 #define BMX160_DATA4            0X08
 #define BMX160_DATA5            0X09
+
 #define BMX160_DATA6            0X0A
 #define BMX160_DATA7            0X0B
+
 #define BMX160_DATA8            0X0C
 #define BMX160_DATA9            0X0D
 #define BMX160_DATA10           0X0E
 #define BMX160_DATA11           0X0F
 #define BMX160_DATA12           0X10
 #define BMX160_DATA13           0X11
+
 #define BMX160_DATA14           0X12
 #define BMX160_DATA15           0X13
 #define BMX160_DATA16           0X14
@@ -205,5 +208,8 @@ uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer
 
 void BMX160_Config_Init(void);          // The BMX160 configuration is initialized
 uint16_t BMX160_GetTemperature(void);   // Get BMX160 temperature
+void BMX160_GetAccelerometer(uint8 *rev_buffer);    // Get BMX160 Accelerometer Value
+void BMX160_GetGyroscope(uint8 *rev_buffer);        // Get BMX160 Gyroscope Value
+void BMX160_GetMagnetometer(uint8 *rev_buffer);     // Get BMX160 Magnetometer Value
 
 #endif
