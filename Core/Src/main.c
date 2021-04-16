@@ -35,8 +35,6 @@ int main(void)
     BMX160_GetTemperature();
 
 
-    BMX160_GetAccelerometer(Acc_Buffer);
-
     while (1)
     {
 

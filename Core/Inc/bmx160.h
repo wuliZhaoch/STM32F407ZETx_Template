@@ -211,6 +211,7 @@ uint8_t BMX160_Read_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffer
 
 void BMX160_Config_Init(void);          // The BMX160 configuration is initialized
 uint16_t BMX160_GetTemperature(void);   // Get BMX160 temperature
+int16_t BMX160_Data_Conversion(uint16_t SensorData);   // Acceleration Data Conversion
 void BMX160_GetAccelerometer(uint8 *rev_buffer);    // Get BMX160 Accelerometer Value
 void BMX160_GetGyroscope(uint8 *rev_buffer);        // Get BMX160 Gyroscope Value
 void BMX160_GetMagnetometer(uint8 *rev_buffer);     // Get BMX160 Magnetometer Value

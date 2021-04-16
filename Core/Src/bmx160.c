@@ -340,6 +340,24 @@ uint16_t BMX160_GetTemperature(void)
 }
 
 /**
+  * @brief  Acceleration Data Conversion
+  * @retval Sensor_Conversion (Processing of the highest bit of data)
+  */
+int16_t BMX160_Data_Conversion(uint16_t SensorData)
+{
+    int16_t Sensor_Conversion = 0;
+    if (SensorData > 0x7FFF)
+    {
+        Sensor_Conversion = -(0xFFFF-SensorData);
+    } else {
+        Sensor_Conversion = SensorData;
+    }
+    return Sensor_Conversion;
+}
+
+
+
+/**
   * @brief  Get BMX160 Accelerometer Value
   * @retval None
   */
@@ -348,58 +366,41 @@ void BMX160_GetAccelerometer(uint8 *rev_buffer)
     uint16_t Accelerometer_x = 0;
     uint16_t Accelerometer_y = 0;
     uint16_t Accelerometer_z = 0;
-    float Accelerometer_short_x = 0;
-    float Accelerometer_short_y = 0;
-    float Accelerometer_short_z = 0;
-//    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA14);
-//    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA15);
-//    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA16);
-//    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA17);
-//    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA18);
-//    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA19);
+
+    int16_t Accelerometer_short_x = 0;
+    int16_t Accelerometer_short_y = 0;
+    int16_t Accelerometer_short_z = 0;
+
+    float Acc_Conversion_x = 0;
+    float Acc_Conversion_y = 0;
+    float Acc_Conversion_z = 0;
 
     BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA14, rev_buffer, ACC_DATA_LEN);
     Accelerometer_x = (rev_buffer[1]<<8) | rev_buffer[0];
     Accelerometer_y = (rev_buffer[3]<<8) | rev_buffer[2];
     Accelerometer_z = (rev_buffer[5]<<8) | rev_buffer[4];
-    if ((Accelerometer_x & 0x8000) == 0x8000)
-    {
-        Accelerometer_x = (~Accelerometer_x) + 1;
-        Accelerometer_short_x = ((float) Accelerometer_x) * 9.8 * 2 / 32768.0;
-        printf("\r\nX-> -%f\r\n", Accelerometer_short_x);
-    } else {
-        Accelerometer_short_x = ((float)Accelerometer_x) * 9.8 * 2 / 32768.0;
-        printf("\r\nX-> %f\r\n", Accelerometer_short_x);
-    }
 
-    if ((Accelerometer_y & 0x8000) == 0x8000)
-    {
-        Accelerometer_y = (~Accelerometer_y) + 1;
-        Accelerometer_short_y = ((float) Accelerometer_y) * 9.8 * 2 / 32768.0;
-        printf("Y-> -%f\r\n", Accelerometer_short_y);
-    } else {
-        Accelerometer_short_y = ((float)(Accelerometer_y)) * 9.8 * 2 / 32768.0;
-        printf("Y-> %f\r\n", Accelerometer_short_y);
-    }
+    Accelerometer_short_x = BMX160_Data_Conversion(Accelerometer_x);
+    Acc_Conversion_x = ((float) Accelerometer_short_x) * 9.8 * 2 / 32768.0;
+    printf("\r\nAccelerometer_X -> %.5f m/s2\r\n", Acc_Conversion_x);
 
-    if (Accelerometer_z > 0x7FFF)
-    {
-        Accelerometer_z = -(0xFFFF-Accelerometer_z);
-        Accelerometer_short_z = (((float) Accelerometer_z) * 9.8) / (0x8000/2);
-        printf("Z-> -%f\r\n", Accelerometer_short_z);
-    } else {
-        Accelerometer_short_z = (((float) Accelerometer_z) * 9.8) / (0x8000/2);
-        printf("Z-> %f\r\n", Accelerometer_short_z);
-    }
-//    if ((Accelerometer_z & 0x8000) == 0x8000)
+    Accelerometer_short_y = BMX160_Data_Conversion(Accelerometer_y);
+    Acc_Conversion_y = ((float) Accelerometer_short_y) * 9.8 * 2 / 32768.0;
+    printf("Accelerometer_Y -> %.5f m/s2\r\n", Acc_Conversion_y);
+
+    Accelerometer_short_z = BMX160_Data_Conversion(Accelerometer_z);
+    Acc_Conversion_z = ((float) Accelerometer_short_z) * 9.8 * 2 / 32768.0;
+    printf("Accelerometer_Z -> %.5f m/s2\r\n", Acc_Conversion_z);
+//    if ((Accelerometer_x & 0x8000) == 0x8000)
 //    {
-//        Accelerometer_z = (~Accelerometer_z) + 1;
-//        Accelerometer_short_z = ((float) Accelerometer_z) * 9.8 * 2 / 32768.0;
-//        printf("Z-> -%f\r\n", Accelerometer_short_z);
+//        Accelerometer_x = (~Accelerometer_x) + 1;
+//        Accelerometer_short_x = ((float) Accelerometer_x) * 9.8 * 2 / 32768.0;
+//        printf("\r\nX-> -%f\r\n", Accelerometer_short_x);
 //    } else {
-//        Accelerometer_short_z = ((float)(Accelerometer_z)) * 9.8 * 2 / 32768.0;
-//        printf("Z-> %f\r\n", Accelerometer_short_z);
+//        Accelerometer_short_x = ((float)Accelerometer_x) * 9.8 * 2 / 32768.0;
+//        printf("\r\nX-> %f\r\n", Accelerometer_short_x);
 //    }
+
 
 }
 
@@ -409,21 +410,34 @@ void BMX160_GetAccelerometer(uint8 *rev_buffer)
   */
 void BMX160_GetGyroscope(uint8 *rev_buffer)
 {
-    int16_t Gyroscope_x = 0;
-    int16_t Gyroscope_y = 0;
-    int16_t Gyroscope_z = 0;
-//    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA8);
-//    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA9);
-//    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA10);
-//    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA11);
-//    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA12);
-//    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA13);
+    uint16_t Gyroscope_x = 0;
+    uint16_t Gyroscope_y = 0;
+    uint16_t Gyroscope_z = 0;
+    
+    int16_t Gyroscope_short_x = 0;
+    int16_t Gyroscope_short_y = 0;
+    int16_t Gyroscope_short_z = 0;
+
+    float Gyr_Conversion_x = 0;
+    float Gyr_Conversion_y = 0;
+    float Gyr_Conversion_z = 0;
 
     BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA8, rev_buffer, GRY_DATA_LEN);
-    Gyroscope_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
-    Gyroscope_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
-    Gyroscope_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
+    Gyroscope_x = (rev_buffer[1]<<8) | rev_buffer[0];
+    Gyroscope_y = (rev_buffer[3]<<8) | rev_buffer[2];
+    Gyroscope_z = (rev_buffer[5]<<8) | rev_buffer[4];
 
+    Gyroscope_short_x = BMX160_Data_Conversion(Gyroscope_x);
+    Gyr_Conversion_x = ((float) Gyroscope_short_x * 2000.0) / 32767.0;
+    printf("\r\nGyroscope_X -> %.5f */s\r\n", Gyr_Conversion_x);
+    
+    Gyroscope_short_y = BMX160_Data_Conversion(Gyroscope_y);
+    Gyr_Conversion_y = ((float) Gyroscope_short_y * 2000.0) / 32767.0;
+    printf("Gyroscope_Y -> %.5f */s\r\n", Gyr_Conversion_y);
+    
+    Gyroscope_short_z = BMX160_Data_Conversion(Gyroscope_z);
+    Gyr_Conversion_z = ((float) Gyroscope_short_z * 2000.0) / 32767.0;
+    printf("Gyroscope_Z -> %.5f */s\r\n", Gyr_Conversion_z);
 }
 
 /**
@@ -432,24 +446,16 @@ void BMX160_GetGyroscope(uint8 *rev_buffer)
   */
 void BMX160_GetMagnetometer(uint8 *rev_buffer)
 {
-    int16_t Magnetometer_x = 0;
-    int16_t Magnetometer_y = 0;
-    int16_t Magnetometer_z = 0;
-    int16_t Magnetometer_rhall = 0;
+//    int16_t Magnetometer_x = 0;
+//    int16_t Magnetometer_y = 0;
+//    int16_t Magnetometer_z = 0;
+//    int16_t Magnetometer_rhall = 0;
 
-//    rev_buffer[0] = BMX160_Read_Byte(BMX160_DATA0);
-//    rev_buffer[1] = BMX160_Read_Byte(BMX160_DATA1);
-//    rev_buffer[2] = BMX160_Read_Byte(BMX160_DATA2);
-//    rev_buffer[3] = BMX160_Read_Byte(BMX160_DATA3);
-//    rev_buffer[4] = BMX160_Read_Byte(BMX160_DATA4);
-//    rev_buffer[5] = BMX160_Read_Byte(BMX160_DATA5);
-//    rev_buffer[6] = BMX160_Read_Byte(BMX160_DATA6);
-//    rev_buffer[7] = BMX160_Read_Byte(BMX160_DATA7);
 
-    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA0, rev_buffer, MAG_DATA_LEN);
-    Magnetometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
-    Magnetometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
-    Magnetometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
-    Magnetometer_rhall = (int16_t)((rev_buffer[7]<<8) | rev_buffer[6]);
+//    BMX160_Read_MultiByte(BMX160_DEVICE_ADDR, BMX160_DATA0, rev_buffer, MAG_DATA_LEN);
+//    Magnetometer_x = (int16_t)((rev_buffer[1]<<8) | rev_buffer[0]);
+//    Magnetometer_y = (int16_t)((rev_buffer[3]<<8) | rev_buffer[2]);
+//    Magnetometer_z = (int16_t)((rev_buffer[5]<<8) | rev_buffer[4]);
+//    Magnetometer_rhall = (int16_t)((rev_buffer[7]<<8) | rev_buffer[6]);
 
 }
