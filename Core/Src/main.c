@@ -27,7 +27,7 @@ int main(void)
     MX_DMA_Init();
     MX_USART1_UART_Init();
 //    MX_I2C1_Init();
-    BMX160_I2C_Init();
+    MY_I2C_Init();
 
     System_GetChipID();     // Get Chip ID
 

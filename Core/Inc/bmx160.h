@@ -192,13 +192,13 @@
 
 
 
-void BMX160_I2C_Init(void);             // I2C Initialize
-void BMX160_I2C_Start(void);            // I2C Start Signal
-void BMX160_I2C_Stop(void);             // I2C Stop Signal
+void MY_I2C_Init(void);             // I2C Initialize
+void I2C_Start(void);            // I2C Start Signal
+void I2C_Stop(void);             // I2C Stop Signal
 
-uint8_t BMX160_I2C_Wait_Ack(void);      // I2C Wait Ack
-void BMX160_I2C_Ack(void);              // I2C Ack
-void BMX160_I2C_NAck(void);             // I2C NAck
+uint8_t I2C_Wait_Ack(void);      // I2C Wait Ack
+void I2C_Ack(void);              // I2C Ack
+void I2C_NAck(void);             // I2C NAck
 
 void BMX160_I2C_WriteByte(uint8_t cmd);     // I2C Write Byte
 uint8_t BMX160_I2C_ReadByte(uint8_t ack);   // I2C Read Byte
