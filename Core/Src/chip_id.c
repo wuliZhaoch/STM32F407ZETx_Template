@@ -20,6 +20,6 @@ void GET_ChipID(ChipIDTypeDef *CHIPID)
 void System_GetChipID(void)
 {
     GET_ChipID(&SystemChipID);
-    printf("System ChipID is: %x%x%x\r\n", SystemChipID.Chip_ID_H,
+    printf("System ChipID is: %lx%lx%lx\r\n", SystemChipID.Chip_ID_H,
             SystemChipID.Chip_ID_M, SystemChipID.Chip_ID_L);
 }
