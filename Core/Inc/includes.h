@@ -28,6 +28,6 @@
 
 #include "delay.h"
 
-//#include "sht30.h"
+#include "sht30.h"
 
 #endif /* INCLUDES_H_ */

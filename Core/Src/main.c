@@ -35,6 +35,8 @@ int main(void)
     BMX160_GetTemperature();
 
 
+    SHT30_WriteByte(SHT30_SOFT_RESET_CMD);
+
     while (1)
     {
 
