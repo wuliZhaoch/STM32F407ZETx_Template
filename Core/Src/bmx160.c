@@ -102,7 +102,7 @@ void I2C_Ack(void)
   * @brief  The BMX160 NAck Signal Function
   * @retval none
   */
-void BMX160_I2C_NAck(void)
+void I2C_NAck(void)
 {
     I2C_SCL_RESET;
     SDA_OUT();
@@ -160,7 +160,7 @@ uint8_t BMX160_I2C_ReadByte(uint8_t ack)
         HAL_Delay_us(1);
     }
     if (!ack){
-        BMX160_I2C_NAck();
+        I2C_NAck();
     } else {
         I2C_Ack();
     }
@@ -224,7 +224,7 @@ uint8_t BMX160_Write_MultiByte(uint8_t DeviceAddr, uint8_t reg, uint8 *rev_buffe
     BMX160_I2C_WriteByte((DeviceAddr<<1) | 0);
     if (I2C_Wait_Ack())
     {
-        BMX160_I2C_Stop();
+        I2C_Stop();
         return 1;
     }
     BMX160_I2C_WriteByte(reg);
