@@ -76,4 +76,11 @@ typedef enum {
 }SHT30_CmdTypeDef;
 
 
+uint8_t SHT30_Write_Byte(SHT30_CmdTypeDef reg);
+
+uint8_t SHT30_Read_Byte(SHT30_CmdTypeDef reg);
+uint8_t SHT30_Read_MultiByte(uint8_t DeviceAddr, SHT30_CmdTypeDef reg, uint8 *rev_buffer, uint16_t Size);
+
+void SHT30_Config_Init(void);
+
 #endif
