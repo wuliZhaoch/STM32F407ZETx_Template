@@ -75,6 +75,8 @@ typedef enum {
 
 }SHT30_CmdTypeDef;
 
+void SHT30_I2C_WriteByte(uint8_t cmd);
+uint8_t SHT30_I2C_ReadByte(uint8_t ack);
 
 uint8_t SHT30_Write_Byte(SHT30_CmdTypeDef reg);
 
