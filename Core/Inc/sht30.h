@@ -77,6 +77,7 @@
 void SHT30_I2C_WriteByte(uint8_t cmd);
 uint8_t SHT30_I2C_ReadByte(uint8_t ack);
 
-uint8_t SHT30_WriteByte(uint16_t reg);
+void SHT30_Write_Byte(uint8_t Address, uint16_t reg);
+void SHT30_Read_Byte(uint8_t Address, uint16_t reg, uint8_t *buff);
 
 #endif

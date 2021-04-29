@@ -453,6 +453,11 @@
               <FileType>1</FileType>
               <FilePath>..\Core\Src\system.c</FilePath>
             </File>
+            <File>
+              <FileName>sht30.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Core\Src\sht30.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

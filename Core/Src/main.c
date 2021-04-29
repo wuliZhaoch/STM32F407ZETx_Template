@@ -8,6 +8,8 @@ uint8_t Acc_Buffer[ACC_DATA_LEN] = {0};
 uint8_t Gyr_Buffer[GRY_DATA_LEN] = {0};
 uint8_t Mag_Buffer[MAG_DATA_LEN] = {0};
 
+uint8_t SHT30_BUFF[6] = {0};
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -33,20 +35,21 @@ int main(void)
 
     BMX160_Config_Init();
     BMX160_GetTemperature();
+    HAL_Delay(1000);
 
-
-    SHT30_WriteByte(SHT30_SOFT_RESET_CMD);
-
+    SHT30_Write_Byte(SHT30_WRITE_ADDRESS, SHT30_HIGH_2_CMD);
+    SHT30_Read_Byte(SHT30_WRITE_ADDRESS, SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
     while (1)
     {
-
-        BMX160_GetAccelerometer(Acc_Buffer);
-        BMX160_GetGyroscope(Gyr_Buffer);
-        BMX160_GetMagnetometer(Mag_Buffer);
+        SHT30_Write_Byte(SHT30_WRITE_ADDRESS, SHT30_HIGH_2_CMD);
+        SHT30_Read_Byte(SHT30_WRITE_ADDRESS, SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+//        BMX160_GetAccelerometer(Acc_Buffer);
+//        BMX160_GetGyroscope(Gyr_Buffer);
+//        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);
 //        main_loop++;
         HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-        HAL_Delay_ms(1000);
+        HAL_Delay_ms(2000);
     }
 
 }

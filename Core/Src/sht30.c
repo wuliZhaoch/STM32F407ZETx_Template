@@ -68,23 +68,49 @@ uint8_t SHT30_I2C_ReadByte(uint8_t ack)
   * @brief  The SHT30 Write Byte
   * @retval none
   */
-uint8_t SHT30_WriteByte(uint16_t reg)
+void SHT30_Write_Byte(uint8_t Address, uint16_t reg)
 {
     I2C_Start();
-
-    SHT30_I2C_WriteByte(SHT30_WRITE_ADDRESS);
-    if (I2C_Wait_Ack()) {
-        I2C_Stop();
-        return 1;
-    }
-    SHT30_I2C_WriteByte((reg >> 8) & 0xFF);
+    SHT30_I2C_WriteByte(Address);
     I2C_Wait_Ack();
-    SHT30_I2C_WriteByte(reg & 0XFF);
-    if (I2C_Wait_Ack()) {
-        I2C_Stop();
-        return 1;
-    }
+    SHT30_I2C_WriteByte((reg >> 8)&0xFF);
+    I2C_Wait_Ack();
+    SHT30_I2C_WriteByte(reg&0xFF);
+    I2C_Wait_Ack();
     I2C_Stop();
-    return 0;
+
+}
+
+/**
+  * @brief  The SHT30 Read Byte
+  * @retval Read data
+  */
+void SHT30_Read_Byte(uint8_t Address, uint16_t reg, uint8_t *buff)
+{
+    uint8_t reg_MSB = 0;
+    uint8_t reg_LSB = 0;
+    reg_MSB = (reg >> 8)&0xFF;
+    reg_LSB = reg&0xFF;
+
+    I2C_Start();
+    SHT30_I2C_WriteByte(Address);
+    I2C_Wait_Ack();
+    SHT30_I2C_WriteByte(reg_MSB);
+    I2C_Wait_Ack();
+    SHT30_I2C_WriteByte(reg_LSB);
+    I2C_Wait_Ack();
+
+    I2C_Start();
+    SHT30_I2C_WriteByte(Address + 1);
+    I2C_Wait_Ack();
+
+    buff[0] = SHT30_I2C_ReadByte(1);
+    buff[1] = SHT30_I2C_ReadByte(1);
+    buff[2] = SHT30_I2C_ReadByte(1);
+    buff[3] = SHT30_I2C_ReadByte(1);
+    buff[4] = SHT30_I2C_ReadByte(1);
+    buff[5] = SHT30_I2C_ReadByte(0);
+
+    I2C_Stop();
 }
 
