@@ -35,21 +35,17 @@ int main(void)
 
     BMX160_Config_Init();
     BMX160_GetTemperature();
-    HAL_Delay(1000);
 
-    SHT30_Write_Byte(SHT30_WRITE_ADDRESS, SHT30_HIGH_2_CMD);
-    SHT30_Read_Byte(SHT30_WRITE_ADDRESS, SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+
     while (1)
     {
-        SHT30_Write_Byte(SHT30_WRITE_ADDRESS, SHT30_HIGH_2_CMD);
-        SHT30_Read_Byte(SHT30_WRITE_ADDRESS, SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
-//        BMX160_GetAccelerometer(Acc_Buffer);
+        BMX160_GetAccelerometer(Acc_Buffer);
 //        BMX160_GetGyroscope(Gyr_Buffer);
 //        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);
 //        main_loop++;
         HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-        HAL_Delay_ms(2000);
+        HAL_Delay_ms(1000);
     }
 
 }

@@ -30,4 +30,6 @@
 
 #include "sht30.h"
 
+#include "myiic.h"
+
 #endif /* INCLUDES_H_ */

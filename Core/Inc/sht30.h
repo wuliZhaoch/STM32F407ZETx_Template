@@ -9,7 +9,7 @@
 #define SHT30_H_
 #include "system.h"
 #include "main.h"
-#include "bmx160.h"
+#include "myiic.h"
 //#include "delay.h"
 
 /* Address Pin Connect to GND */
