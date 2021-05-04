@@ -22,7 +22,7 @@ void MY_I2C_Init(void)
     GPIO_InitStruct.Pin = GPIO_PIN_8 | GPIO_PIN_9;
     GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStruct.Pull = GPIO_PULLUP;
-    GPIO_InitStruct.Speed = GPIO_SPEED_FAST;
+    GPIO_InitStruct.Speed = GPIO_SPEED_LOW;
     HAL_GPIO_Init(BMX160_GPIO_Port, &GPIO_InitStruct);
 
     HAL_GPIO_WritePin(GPIOB, GPIO_PIN_8 | GPIO_PIN_9, GPIO_PIN_SET);
@@ -51,9 +51,11 @@ void I2C_Stop(void)
 {
     SDA_OUT();
     I2C_SCL_RESET;
+    HAL_Delay_us(1);
     I2C_SDA_RESET;
     HAL_Delay_us(4);
     I2C_SCL_SET;
+    HAL_Delay_us(1);
     I2C_SDA_SET;
     HAL_Delay_us(4);
 }
@@ -67,8 +69,10 @@ uint8_t I2C_Wait_Ack(void)
 {
     uint8_t ucErrTime = 0;
     SDA_IN();
-    I2C_SDA_SET;HAL_Delay_us(1);
-    I2C_SCL_SET;HAL_Delay_us(1);
+    I2C_SDA_SET;
+    HAL_Delay_us(1);
+    I2C_SCL_SET;
+    HAL_Delay_us(1);
     while (READ_SDA)
     {
         ucErrTime++;
@@ -78,6 +82,8 @@ uint8_t I2C_Wait_Ack(void)
         }
     }
     I2C_SCL_RESET;
+    HAL_Delay_us(2);
+
     return 0;
 }
 

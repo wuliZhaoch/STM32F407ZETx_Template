@@ -33,13 +33,18 @@ int main(void)
 
     System_GetChipID();     // Get Chip ID
 
-    BMX160_Config_Init();
-    BMX160_GetTemperature();
+//    BMX160_Config_Init();
+//    BMX160_GetTemperature();
 
 
+
+    SHT30_Write_Byte(SHT30_SOFT_RESET_CMD);
     while (1)
     {
-        BMX160_GetAccelerometer(Acc_Buffer);
+        SHT30_Read_Byte(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+//        SHT30_Write_Byte(SHT30_HIGH_2_CMD);
+//        SHT30_Write_Byte(SHT30_HIGH_2_CMD);
+//        BMX160_GetAccelerometer(Acc_Buffer);
 //        BMX160_GetGyroscope(Gyr_Buffer);
 //        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);
