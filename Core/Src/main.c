@@ -50,7 +50,7 @@ int main(void)
         SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
         printf("SHT30 Temperature is:  %f \r\n", sht30_temperature);
         printf("SHT30 Humidity is:  %f \r\n", sht30_humidity);
-//        BMX160_GetAccelerometer(Acc_Buffer);
+        BMX160_GetAccelerometer(Acc_Buffer);
 //        BMX160_GetGyroscope(Gyr_Buffer);
 //        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);

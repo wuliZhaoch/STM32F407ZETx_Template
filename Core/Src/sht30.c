@@ -57,10 +57,9 @@ void SHT30_I2C_WriteByte(uint8_t cmd)
          cmd <<= 1;
          HAL_Delay_us(2);
          I2C_SCL_SET;
-
          HAL_Delay_us(2);
          I2C_SCL_RESET;
-         HAL_Delay_us(2);
+//         HAL_Delay_us(2);
     }
 }
 
@@ -82,7 +81,7 @@ uint8_t SHT30_I2C_ReadByte(uint8_t ack)
         if(READ_SDA) {
             Receive_Data++;
         }
-        HAL_Delay_us(1);
+        HAL_Delay_us(2);
     }
     if (!ack){
         I2C_NAck();
