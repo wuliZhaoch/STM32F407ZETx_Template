@@ -10,7 +10,11 @@
 #include "system.h"
 #include "main.h"
 #include "myiic.h"
+#include "usart.h"
 //#include "delay.h"
+
+#define CRC8_POLYNOMIAL         0x31        // CRC Checksum use (Polynomial Value)
+#define CRC8_INITIALIZATION     0xFF        // CRC Checksum use (Initialization Value)
 
 /* Address Pin Connect to GND */
 #define SHT30_DEVICE_ADDR           0X44    // SHT30 Device Address
@@ -72,12 +76,17 @@
 /* Clear Status Register */
 #define SHT30_CLEAR_STATUS_REG_CMD  0x3041
 
-
+uint8_t CheckCrc8(uint8_t* const message);
 
 void SHT30_I2C_WriteByte(uint8_t cmd);
 uint8_t SHT30_I2C_ReadByte(uint8_t ack);
 
-void SHT30_Write_Byte(uint16_t reg);
-void SHT30_Read_Byte(uint16_t reg, uint8_t *buff);
+void SHT30_Write_Byte(uint8_t Device_Write_addr, uint16_t reg);
+void SHT30_Read_Byte(uint8_t Device_Read_addr, uint16_t reg, uint8_t *buff);
+
+void SHT30_Write_Commend(uint16_t reg);
+uint8_t SHT30_Read_Temperature_Humidity(uint16_t reg, uint8_t *buff);
+void SHT30_Data_Conversion(uint8_t* const dat, float* temperature, float* humidity);
+void SHT30_Init(void);
 
 #endif

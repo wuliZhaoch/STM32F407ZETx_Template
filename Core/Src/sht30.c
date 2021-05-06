@@ -7,6 +7,36 @@
  */
 #include "sht30.h"
 
+uint8_t CheckCrc8(uint8_t* const message)
+{
+    uint8_t  remainder;        // remainder
+    uint8_t  i = 0, j = 0;
+
+    /* 初始化 */
+    remainder = CRC8_INITIALIZATION;
+
+    for(j = 0; j < 2; j++)
+    {
+        remainder ^= message[j];
+
+        /* 从最高位开始依次计算  */
+        for (i = 0; i < 8; i++)
+        {
+            if (remainder & 0x80)
+            {
+                remainder = (remainder << 1)^CRC8_POLYNOMIAL;
+            }
+            else
+            {
+                remainder = (remainder << 1);
+            }
+        }
+    }
+
+    /* 返回计算的CRC码 */
+    return remainder;
+}
+
 
 /**
   * @brief  The SHT30 I2C Write Byte
@@ -66,15 +96,30 @@ uint8_t SHT30_I2C_ReadByte(uint8_t ack)
   * @brief  The SHT30 Write Byte
   * @retval none
   */
-void SHT30_Write_Byte(uint16_t reg)
+void SHT30_Write_Byte(uint8_t Device_Write_addr, uint16_t reg)
+{
+    SHT30_I2C_WriteByte(Device_Write_addr);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+    SHT30_I2C_WriteByte(reg >> 8);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+    SHT30_I2C_WriteByte(reg);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+}
+
+/**
+  * @brief  The SHT30 Write Commend
+  * @retval none
+  */
+void SHT30_Write_Commend(uint16_t reg)
 {
     I2C_Start();
-    SHT30_I2C_WriteByte(SHT30_WRITE_ADDRESS);
-    I2C_Wait_Ack();
-    SHT30_I2C_WriteByte(reg >> 8);
-    I2C_Wait_Ack();
-    SHT30_I2C_WriteByte(reg);
-    I2C_Wait_Ack();
+    SHT30_Write_Byte(SHT30_WRITE_ADDRESS, reg);
     I2C_Stop();
 }
 
@@ -82,22 +127,29 @@ void SHT30_Write_Byte(uint16_t reg)
   * @brief  The SHT30 Read Byte
   * @retval Read data
   */
-void SHT30_Read_Byte(uint16_t reg, uint8_t *buff)
+void SHT30_Read_Byte(uint8_t Device_Read_addr, uint16_t reg, uint8_t *buff)
 {
     I2C_Start();
-
     SHT30_I2C_WriteByte(SHT30_WRITE_ADDRESS);
-    I2C_Wait_Ack();
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
     SHT30_I2C_WriteByte(reg >> 8);
-    I2C_Wait_Ack();
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
     SHT30_I2C_WriteByte(reg);
-    I2C_Wait_Ack();
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
 
     HAL_Delay_us(10);
 
     I2C_Start();
-    SHT30_I2C_WriteByte(SHT30_READ_ADDRESS);
-    I2C_Wait_Ack();
+    SHT30_I2C_WriteByte(Device_Read_addr);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
 
     buff[0] = SHT30_I2C_ReadByte(1);
     buff[1] = SHT30_I2C_ReadByte(1);
@@ -105,8 +157,49 @@ void SHT30_Read_Byte(uint16_t reg, uint8_t *buff)
     buff[3] = SHT30_I2C_ReadByte(1);
     buff[4] = SHT30_I2C_ReadByte(1);
     buff[5] = SHT30_I2C_ReadByte(0);
-
     I2C_Stop();
-
 }
+
+/**
+  * @brief  The SHT30 Read Data
+  * @retval none
+  */
+uint8_t SHT30_Read_Temperature_Humidity(uint16_t reg, uint8_t *buff)
+{
+    SHT30_Read_Byte(SHT30_READ_ADDRESS, reg, buff);
+    if (CheckCrc8(buff) != buff[2] && CheckCrc8(&buff[3]) != buff[5])
+    {
+        return HAL_ERROR;
+    }
+    return HAL_OK;
+}
+
+/**
+  * @brief  The SHT30 Data Conversion
+  * @retval none
+  */
+void SHT30_Data_Conversion(uint8_t* const dat, float* temperature, float* humidity)
+{
+    uint16_t recv_temperature = 0;
+    uint16_t recv_humidity = 0;
+
+    recv_temperature = (uint16_t)(dat[0] << 8 | dat[1]);
+    *temperature = -45 + 175 * ((float)recv_temperature / 65535);
+
+    recv_humidity = (uint16_t)(dat[3] << 8 | dat[4]);
+    *humidity = 100 * ((float)recv_humidity / 65535);
+}
+/**
+  * @brief  The SHT30 Init
+  * @retval none
+  */
+void SHT30_Init(void)
+{
+    /* SoftWare Reset */
+    SHT30_Write_Commend(SHT30_SOFT_RESET_CMD);
+    HAL_Delay_ms(10);
+    SHT30_Write_Commend(SHT30_HIGH_10_CMD);
+    HAL_Delay_ms(10);
+}
+
 
