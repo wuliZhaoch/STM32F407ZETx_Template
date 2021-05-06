@@ -93,7 +93,7 @@ void SHT30_Read_Byte(uint16_t reg, uint8_t *buff)
     SHT30_I2C_WriteByte(reg);
     I2C_Wait_Ack();
 
-    HAL_Delay_us(5);
+    HAL_Delay_us(10);
 
     I2C_Start();
     SHT30_I2C_WriteByte(SHT30_READ_ADDRESS);

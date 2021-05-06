@@ -33,15 +33,22 @@ int main(void)
 
     System_GetChipID();     // Get Chip ID
 
-//    BMX160_Config_Init();
-//    BMX160_GetTemperature();
+    BMX160_Config_Init();
+    BMX160_GetTemperature();
 
 
 
     SHT30_Write_Byte(SHT30_SOFT_RESET_CMD);
     while (1)
     {
+        SHT30_Write_Byte(SHT30_HIGH_2_CMD);
+        HAL_Delay_ms(20);
         SHT30_Read_Byte(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+        for (uint8_t i = 0;i < 6; i++)
+        {
+            printf("SHT30_BUFF[%d] is: 0x%x\r\n", i, SHT30_BUFF[i]);
+        }
+        printf("\r\n");
 //        SHT30_Write_Byte(SHT30_HIGH_2_CMD);
 //        SHT30_Write_Byte(SHT30_HIGH_2_CMD);
 //        BMX160_GetAccelerometer(Acc_Buffer);
