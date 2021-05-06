@@ -87,6 +87,7 @@ void SHT30_Read_Byte(uint8_t Device_Read_addr, uint16_t reg, uint8_t *buff);
 void SHT30_Write_Commend(uint16_t reg);
 uint8_t SHT30_Read_Temperature_Humidity(uint16_t reg, uint8_t *buff);
 void SHT30_Data_Conversion(uint8_t* const dat, float* temperature, float* humidity);
+uint16_t SHT30_Status_Read(uint16_t reg, uint8_t *buff);
 void SHT30_Init(void);
 
 #endif

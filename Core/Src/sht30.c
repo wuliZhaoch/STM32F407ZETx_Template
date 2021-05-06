@@ -189,6 +189,45 @@ void SHT30_Data_Conversion(uint8_t* const dat, float* temperature, float* humidi
     recv_humidity = (uint16_t)(dat[3] << 8 | dat[4]);
     *humidity = 100 * ((float)recv_humidity / 65535);
 }
+
+/**
+  * @brief  The SHT30 Status Read
+  * @retval none
+  */
+uint16_t SHT30_Status_Read(uint16_t reg, uint8_t *buff)
+{
+    uint16_t ret = 0;
+    I2C_Start();
+    SHT30_I2C_WriteByte(SHT30_WRITE_ADDRESS);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+    SHT30_I2C_WriteByte(reg >> 8);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+    SHT30_I2C_WriteByte(reg);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+
+    HAL_Delay_us(10);
+
+    I2C_Start();
+    SHT30_I2C_WriteByte(SHT30_READ_ADDRESS);
+    if (I2C_Wait_Ack()) {
+        I2C_Stop();
+    }
+
+    buff[0] = SHT30_I2C_ReadByte(1);
+    buff[1] = SHT30_I2C_ReadByte(1);
+    buff[2] = SHT30_I2C_ReadByte(0);
+    ret = (uint16_t)(buff[0] << 8| buff[1]);
+    I2C_Stop();
+
+    return ret;
+}
+
 /**
   * @brief  The SHT30 Init
   * @retval none

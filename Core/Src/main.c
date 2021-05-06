@@ -10,6 +10,8 @@ uint8_t Gyr_Buffer[GRY_DATA_LEN] = {0};
 uint8_t Mag_Buffer[MAG_DATA_LEN] = {0};
 
 uint8_t SHT30_BUFF[6] = {0};
+uint8_t SHT30_Status_buff[3] = {0};
+uint16_t SHT30_Status = 0;
 
 /**
   * @brief  The application entry point.
@@ -36,14 +38,18 @@ int main(void)
     BMX160_GetTemperature();
 
     SHT30_Init();
-    /* The sensor measures 10 times per second,Turn on Periodic Mode */
-    SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
-    SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
-    printf("SHT30 Temperature is:  %f \r\n", sht30_temperature);
-    printf("SHT30 Humidity is:  %f \r\n", sht30_humidity);
+
+
+
+
 
     while (1)
     {
+        /* The sensor measures 10 times per second,Turn on Periodic Mode */
+        SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+        SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
+        printf("SHT30 Temperature is:  %f \r\n", sht30_temperature);
+        printf("SHT30 Humidity is:  %f \r\n", sht30_humidity);
 //        BMX160_GetAccelerometer(Acc_Buffer);
 //        BMX160_GetGyroscope(Gyr_Buffer);
 //        BMX160_GetMagnetometer(Mag_Buffer);
