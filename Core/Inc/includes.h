@@ -22,8 +22,14 @@
 
 #include "chip_eeprom.h"
 
-#include "i2c.h"
+//#include "i2c.h"
 
 #include "bmx160.h"
+
+#include "delay.h"
+
+#include "sht30.h"
+
+#include "myiic.h"
 
 #endif /* INCLUDES_H_ */

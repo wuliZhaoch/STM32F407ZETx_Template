@@ -62,20 +62,6 @@ void SystemClock_Config(void)
 
 /* USER CODE BEGIN 4 */
 
-void HAL_Delay_US(uint32_t Delay_us)
-{
-    uint32_t temp;
-    SysTick->LOAD = SystemCoreClock / 1000000 / 8 * Delay_us;
-    SysTick->VAL = 0X00; //清空计数器
-    SysTick->CTRL = 0X01; //使能，减到零是无动作，采用外部时钟源
-    do
-    {
-        temp = SysTick->CTRL; //读取当前倒计数值
-    } while ((temp & 0x01) && (!(temp & 0x10000))); //等待时间到达
-    SysTick->CTRL = 0x00; //关闭计数器
-    SysTick->VAL = 0X00; //清空计数器
-}
-
 /* USER CODE END 4 */
 
 /**

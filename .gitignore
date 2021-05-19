@@ -75,6 +75,8 @@ MDK-ARM/min/
 
 # DebugConfig
 MDK-ARM/DebugConfig/
+MDK-ARM/RTE/
+MDK-ARM/STM32F407ZET6_Project/
 
 # jlink related
 MDK-ARM/JLinkLog.txt

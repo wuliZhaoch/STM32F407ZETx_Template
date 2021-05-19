@@ -9,8 +9,10 @@
 
 #include "main.h"
 #include "system.h"
+#include "usart.h"
 
 #define CHIPID_LEN 3
+
 
 typedef struct {
     uint32_t Chip_ID_H;
@@ -19,5 +21,6 @@ typedef struct {
 } ChipIDTypeDef;
 
 void GET_ChipID(ChipIDTypeDef *CHIPID);
+void System_GetChipID(void);
 
 #endif
