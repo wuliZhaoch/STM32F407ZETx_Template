@@ -13,6 +13,43 @@ uint8_t SHT30_BUFF[6] = {0};
 uint8_t SHT30_Status_buff[3] = {0};
 uint16_t SHT30_Status = 0;
 
+#define PERIODOC_SAMPLING_NUMBER    350
+#define SAMPLE_NUMBER               (PERIODOC_SAMPLING_NUMBER*4)
+
+uint32_t ADC_DMABuffer[SAMPLE_NUMBER] = {0};
+uint8_t ADC_Conv_Flag;
+
+uint16_t channel3_buffer[PERIODOC_SAMPLING_NUMBER] = {0};
+uint16_t channel6_buffer[PERIODOC_SAMPLING_NUMBER] = {0};
+uint16_t channel12_buffer[PERIODOC_SAMPLING_NUMBER] = {0};
+uint16_t channel13_buffer[PERIODOC_SAMPLING_NUMBER] = {0};
+
+void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
+{
+
+    if (hadc == &hadc1)
+    {
+        HAL_ADC_Stop_DMA(&hadc1);
+        for (uint16_t i = 0; i < PERIODOC_SAMPLING_NUMBER; i++)
+        {
+            channel3_buffer[i] = ADC_DMABuffer[i*4];
+            channel6_buffer[i] = ADC_DMABuffer[i*4+1];
+            channel12_buffer[i] = ADC_DMABuffer[i*4+2];
+            channel12_buffer[i] = ADC_DMABuffer[i*4+3];
+        }
+//        for (uint16_t i = 0; i < PERIODOC_SAMPLING_NUMBER; i++)
+//        {
+//            printf("%d\r\n", channel3_buffer[i]);
+//        }
+//        printf("\r\n");
+        for (uint16_t i = 0; i < PERIODOC_SAMPLING_NUMBER; i++)
+        {
+            printf("%d\r\n", channel6_buffer[i]);
+        }
+        printf("\r\n");
+    }
+}
+
 /**
   * @brief  The application entry point.
   * @retval int
@@ -46,18 +83,22 @@ int main(void)
 
     while (1)
     {
+        HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC_DMABuffer, SAMPLE_NUMBER);
+        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
+        HAL_Delay(5000);
+
         /* The sensor measures 10 times per second,Turn on Periodic Mode */
-        SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
-        SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
-        printf("SHT30 Temperature is:  %f \r\n", sht30_temperature);
-        printf("SHT30 Humidity is:  %f \r\n", sht30_humidity);
-        BMX160_GetAccelerometer(Acc_Buffer);
+//        SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
+//        SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
+//        printf("SHT30 Temperature is:  %f \r\n", sht30_temperature);
+//        printf("SHT30 Humidity is:  %f \r\n", sht30_humidity);
+//        BMX160_GetAccelerometer(Acc_Buffer);
 //        BMX160_GetGyroscope(Gyr_Buffer);
 //        BMX160_GetMagnetometer(Mag_Buffer);
 //        printf("System main_loop is: %ld\r\n", main_loop);
 //        main_loop++;
-        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-        HAL_Delay_ms(1000);
+//        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
+//        HAL_Delay_ms(1000);
     }
 
 }
