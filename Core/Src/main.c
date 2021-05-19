@@ -31,6 +31,7 @@ int main(void)
     MX_USART1_UART_Init();
 //    MX_I2C1_Init();
     MY_I2C_Init();
+    MX_ADC1_Init();
 
     System_GetChipID();     // Get Chip ID
 
