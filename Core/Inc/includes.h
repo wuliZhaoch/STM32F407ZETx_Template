@@ -32,4 +32,6 @@
 
 #include "myiic.h"
 
+#include "adc.h"
+
 #endif /* INCLUDES_H_ */
