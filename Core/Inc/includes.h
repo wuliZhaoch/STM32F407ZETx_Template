@@ -34,4 +34,6 @@
 
 #include "adc.h"
 
+#include "tim.h"
+
 #endif /* INCLUDES_H_ */

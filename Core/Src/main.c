@@ -69,6 +69,7 @@ int main(void)
 //    MX_I2C1_Init();
     MY_I2C_Init();
     MX_ADC1_Init();
+    MX_TIM2_Init();
 
     System_GetChipID();     // Get Chip ID
 
