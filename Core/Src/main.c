@@ -51,6 +51,20 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 }
 
 /**
+  * @brief  Period elapsed callback in non-blocking mode
+  * @param  htim TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim == &htim2)
+    {
+        HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC_DMABuffer, SAMPLE_NUMBER);
+        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
+    }
+}
+
+/**
   * @brief  The application entry point.
   * @retval int
   */
@@ -84,9 +98,9 @@ int main(void)
 
     while (1)
     {
-        HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC_DMABuffer, SAMPLE_NUMBER);
-        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
-        HAL_Delay(5000);
+//        HAL_ADC_Start_DMA(&hadc1, (uint32_t *)ADC_DMABuffer, SAMPLE_NUMBER);
+//        HAL_GPIO_TogglePin(SYSTEM_RUN_LED_GPIO_Port, SYSTEM_RUN_LED_Pin);
+//        HAL_Delay(5000);
 
         /* The sensor measures 10 times per second,Turn on Periodic Mode */
 //        SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
