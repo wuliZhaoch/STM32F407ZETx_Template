@@ -61,7 +61,13 @@ void Error_Handler(void);
 #define SYSTEM_RUN_LED_Pin GPIO_PIN_15
 #define SYSTEM_RUN_LED_GPIO_Port GPIOC
 /* USER CODE BEGIN Private defines */
+#define GPB2_IN1_Pin GPIO_PIN_2
+#define GPB2_IN2_Pin GPIO_PIN_3
+#define GPB2_IN_GPIO_Port GPIOE
 
+#define GPB1_IN1_Pin GPIO_PIN_4
+#define GPB1_IN2_Pin GPIO_PIN_5
+#define GPB1_IN_GPIO_Port GPIOE
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus
