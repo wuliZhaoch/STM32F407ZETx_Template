@@ -177,7 +177,7 @@ int main(void)
                 Error_Handler();
             }
         }
-        HAL_Delay(5000);
+        HAL_Delay(1000);
         /* The sensor measures 10 times per second,Turn on Periodic Mode */
 //        SHT30_Read_Temperature_Humidity(SHT30_PERIODIC_MODE_READ, SHT30_BUFF);
 //        SHT30_Data_Conversion(SHT30_BUFF, &sht30_temperature, &sht30_humidity);
